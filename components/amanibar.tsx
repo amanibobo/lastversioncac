@@ -40,6 +40,7 @@ import Tasks from "@/app/components/civix/task"
 import { Button } from "./ui/button"
 import { signOutAction } from "@/actions/auth-action"
 import { ComponentProps } from "react"
+
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
@@ -49,121 +50,24 @@ const data = {
       items: [
         {
           title: "Explore",
-          url: "#",
+          url: "/loggedin",
         },
         {
-          title: "Senators",
+          title: "Database",
           url: "/loggedin/people",
         },
       ],
     },
     {
-      title: "Building Your Application",
+      title: "Other Tabs",
       url: "#",
       items: [
         {
-          title: "Routing",
+          title: "Education",
           url: "#",
         },
         {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
+          title: "Community",
           url: "#",
         },
       ],
@@ -172,13 +76,14 @@ const data = {
 }
 
 export default function Component({
-    children,
-}: ComponentProps) {
+  children,
+}: ComponentProps<any>) {
+  const [activeItem, setActiveItem] = React.useState("Explore")
   const [selectedVersion, setSelectedVersion] = React.useState(data.versions[0])
 
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar className="bg-white">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -186,25 +91,25 @@ export default function Component({
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton
                     size="lg"
-                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                    className="data-[state=open]:bg-gray-100"
                   >
-                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue-600 text-white">
                       <GalleryVerticalEnd className="size-4" />
                     </div>
                     <div className="flex flex-col gap-0.5 leading-none">
-                      <span className="font-semibold">Civix</span>
-                      <span className="">user-email</span>
+                      <span className="font-semibold text-gray-900">Civix</span>
+                      <span className="text-gray-500">user-email</span>
                     </div>
-                    <ChevronsUpDown className="ml-auto" />
+                    <ChevronsUpDown className="ml-auto text-gray-500" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   className="w-[--radix-dropdown-menu-trigger-width]"
                 >
-                 <form action={signOutAction}>
-                    <Button>Sign Out</Button>
-                </form>
-                <Button>Content Prefrences</Button>
+                  <form action={signOutAction}>
+                    <Button className="w-full bg-red-500 hover:bg-red-600 text-white">Sign Out</Button>
+                  </form>
+                 
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
@@ -218,23 +123,27 @@ export default function Component({
                 <SidebarInput
                   id="search"
                   placeholder="Search Civix..."
-                  className="pl-8"
+                  className="pl-8 border-gray-200 focus:border-blue-400 focus:ring-blue-400"
                 />
-                <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
+                <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none text-gray-400" />
               </SidebarGroupContent>
             </SidebarGroup>
           </form>
         </SidebarHeader>
         <SidebarContent>
-          {/* We create a SidebarGroup for each parent. */}
-          {data.navMain.map((item) => (
-            <SidebarGroup key={item.title}>
-              <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+          {data.navMain.map((group) => (
+            <SidebarGroup key={group.title}>
+              <SidebarGroupLabel className="text-gray-900 font-semibold">{group.title}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {item.items.map((item) => (
+                  {group.items.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild isActive={item.isActive}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={activeItem === item.title}
+                        className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 data-[active=true]:bg-blue-50 data-[active=true]:text-blue-600"
+                        onClick={() => setActiveItem(item.title)}
+                      >
                         <a href={item.url}>{item.title}</a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -244,32 +153,34 @@ export default function Component({
             </SidebarGroup>
           ))}
         </SidebarContent>
-        <SidebarRail />
+        <SidebarRail className="bg-gray-50" />
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b border-gray-200 bg-white px-4">
+          <SidebarTrigger className="-ml-1 text-gray-600 hover:text-gray-900 hover:bg-gray-100" />
+          <Separator orientation="vertical" className="mr-2 h-4 bg-gray-200" />
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
+                <BreadcrumbLink href="#" className="text-gray-600 hover:text-gray-900">
                   Building Your Application
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbSeparator className="hidden md:block text-gray-400" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                <BreadcrumbPage className="text-gray-900">{activeItem}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
           <UserProfile/>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-        {children}
-        <Tasks />
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div>
+        <main className="min-h-[calc(100vh-4rem)] p-4 md:p-6 bg-gray-50">
+          <div className="mx-auto max-w-7xl space-y-4">
+            {children}
+            <Tasks />
+            <div className="min-h-[100vh] flex-1 rounded-xl bg-white md:min-h-min" />
+          </div>
+        </main>
       </SidebarInset>
     </SidebarProvider>
   )
