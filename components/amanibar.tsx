@@ -83,7 +83,7 @@ export default function Component({
 
   return (
     <SidebarProvider>
-      <Sidebar className="bg-white">
+      <Sidebar>
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>

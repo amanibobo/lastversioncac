@@ -9,13 +9,14 @@ import UserProfile from "../components/civix/user-profile";
 import { Sidebar, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Component from "@/components/amanibar";
+import CivixMarketplace from "@/components/civix-marketplace";
 
 export default function Home() {
   const tasks = useQuery(api.tasks.get);
   return (
     <div>
      <Component>
-      <h1>The Database connect to api will go here</h1>
+      <CivixMarketplace />
      </Component>
     </div>
   );
