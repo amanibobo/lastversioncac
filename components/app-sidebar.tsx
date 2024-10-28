@@ -34,7 +34,7 @@ const data = {
       ],
     },
     {
-      title: "Building Your Application",
+      title: "Civix",
       url: "#",
       items: [
         {
